@@ -12,19 +12,10 @@ from effdet.efficientdet.utils import BBoxTransform, ClipBoxes
 from effdet.utils.utils import preprocess, invert_affine, postprocess
 
 def init_effdet_model(weight, obj_list, coef=2, use_cuda=True):
-    coef = 3
-    force_input_size = None  # set None to use default size
+
 
     cudnn.fastest = True
     cudnn.benchmark = True
-
-
-
-    global input_size
-
-    input_sizes = [512, 640, 768, 896, 1024, 1280, 1280, 1536, 1536]
-    input_size = input_sizes[coef] if force_input_size is None else force_input_size
-
 
     model = EfficientDetBackbone(compound_coef=coef, num_classes=len(obj_list),
 
@@ -42,12 +33,17 @@ def init_effdet_model(weight, obj_list, coef=2, use_cuda=True):
   
     return model
 
-def inference_effdet_model(model, img,  obj_list, threshold=0.6,  use_cuda=True):
+def inference_effdet_model(model, img, coef=2, threshold=0.6, use_cuda=True):
 
     threshold = 0.6
     iou_threshold = 0.1
 
-    ori_imgs, framed_imgs, framed_metas = preprocess(img, max_size=input_size)
+    force_input_size = None  # set None to use default size
+    
+    input_sizes = [512, 640, 768, 896, 1024, 1280, 1280, 1536, 1536]
+    input_size = input_sizes[coef] if force_input_size is None else force_input_size
+
+    framed_imgs, framed_metas = preprocess(img, max_size=input_size)
 
     if use_cuda:
         x = torch.stack([torch.from_numpy(fi).cuda() for fi in framed_imgs], 0)
