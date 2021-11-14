@@ -1,6 +1,6 @@
 import torch
 from torch.backends import cudnn
-from torch.hub import load_state_dict_from_url as load_url 
+from torch.hub import load_state_dict_from_url as load_url
 
 from effdet.backbone import EfficientDetBackbone
 
@@ -8,7 +8,6 @@ from effdet.efficientdet.utils import BBoxTransform, ClipBoxes
 from effdet.utils.utils import preprocess, invert_affine, postprocess
 
 def init_effdet_model(weight, obj_list, coef=2, use_cuda=True):
-
 
     cudnn.fastest = True
     cudnn.benchmark = True
