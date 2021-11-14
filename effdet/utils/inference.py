@@ -1,12 +1,8 @@
-import sys
-sys.path.append("E:/Users/darkb/OneDrive/Documentos/EIE/Tesis/Pruebas_de_codigos/Yet-Another-EfficientDet-Pytorch")
 import torch
 from torch.backends import cudnn
+from torch.hub import load_state_dict_from_url as load_url 
 
 from effdet.backbone import EfficientDetBackbone
-import cv2
-import matplotlib.pyplot as plt
-import numpy as np
 
 from effdet.efficientdet.utils import BBoxTransform, ClipBoxes
 from effdet.utils.utils import preprocess, invert_affine, postprocess
@@ -22,9 +18,10 @@ def init_effdet_model(weight, obj_list, coef=2, use_cuda=True):
                                 # replace this part with your project's anchor config
                                 ratios=[(1.0, 1.0), (1.4, 0.7), (0.7, 1.4)],
                                 scales=[2 ** 0, 2 ** (1.0 / 3.0), 2 ** (2.0 / 3.0)])
-
-    # model.load_state_dict(torch.load('E:/Users/darkb/OneDrive/Documentos/EIE/Tesis/Pruebas_de_codigos/Yet-Another-EfficientDet-Pytorch/weights/efficientdet-d3_198_33400.pth'))
-    model.load_state_dict(torch.load(weight))
+    if 'http' in weight:
+        model.load_state_dict(load_url(weight))
+    else:    
+        model.load_state_dict(torch.load(weight))
     model.requires_grad_(False)
     model.eval()
 
