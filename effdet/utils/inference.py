@@ -31,7 +31,6 @@ def init_effdet_model(weight, obj_list, coef=2, use_cuda=True):
 
 def inference_effdet_model(model, img, coef=2, threshold=0.6, use_cuda=True):
 
-    threshold = 0.6
     iou_threshold = 0.1
 
     force_input_size = None  # set None to use default size
