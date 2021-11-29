@@ -9,7 +9,7 @@ setup(
     version="1.0",
     description="EfficientDET Modified in Pytorch",
     author="zylo117",
-    packages=find_packages(exclude=['logs','projects','datasets','res']),
+    packages=find_packages(exclude=['logs','projects','datasets','res'],include=['*']),
     # py_modules=["effdet"],
     install_requires=[
         str(r)
